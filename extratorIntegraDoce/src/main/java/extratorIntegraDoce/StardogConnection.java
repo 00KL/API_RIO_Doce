@@ -13,7 +13,7 @@ public class StardogConnection {
 	
 	private String server;
     private String dataBase;
-    private String username = "admin";
+    private String username = "admin";//Para finalidade de testes, a ideia é exigir o usename e senha para o acesso
     private String password = "admin";
     
     private ConnectionConfiguration connectionConfig;
@@ -21,6 +21,7 @@ public class StardogConnection {
         
     final Logger log = LoggerFactory.getLogger(Stardog.class);
 
+    //
 	public StardogConnection(String server, String dataBase, String username, String password) {
 		super();
 		this.server = server;
@@ -76,7 +77,10 @@ public class StardogConnection {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-
+	
+	//Retorna conexao com o repositorio
+	//INPUT: nenhum
+	//OUTPUT: Uma conexao com o respositorio 
 	public RepositoryConnection getConnection() {
 		this.repository = new StardogRepository(this.connectionConfig);
 		this.repository.initialize();
@@ -85,6 +89,9 @@ public class StardogConnection {
 		}
 	}
 	
+	//Termina conexão do banco caso exista
+	//INPUT: nenhuma
+	//OUPUT: nenhum
 	public void closeConnection() {
 		if(this.repository.isInitialized())
 			this.repository.shutDown();

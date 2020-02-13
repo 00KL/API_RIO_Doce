@@ -10,7 +10,7 @@
 
     <Loggers>
         <Root level="debug" additivity="false">
-            <!-- <AppenderRef ref="console" /> -->
+            <AppenderRef ref="console" />
         </Root>
     </Loggers>
 </Configuration>

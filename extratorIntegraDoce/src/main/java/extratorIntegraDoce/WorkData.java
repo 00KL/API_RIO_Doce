@@ -27,50 +27,82 @@ public class WorkData {
 
 	private RepositoryConnection repoConn;
 
-	ValueFactory valueFactory;
+	public ValueFactory valueFactory;
+	
 
 	public WorkData(RepositoryConnection repoConn) {
 		super();
 		this.repoConn = repoConn;
 		this.valueFactory = repoConn.getValueFactory();
 	}
-
+	
+	//INPUT: String
+	//OUTPUT: IRI da string dada
 	public IRI createIRI(String localName) {			
 		return valueFactory.createIRI(localName);
 	}
-	
+	//INPUT: String referente ao namespace(prefixo) e a variável local
+	//OUTPUT: Concatena ambas em uma IRI
 	public IRI createIRI(String namespace, String localName) {			
 		return valueFactory.createIRI(namespace, localName);
 	}
 	
+	//INPUT: Uma string
+	//OUTPUT: Retorna uma representacao da string em formato XMLSchema.STRING.
 	public Literal createLiteral(String literal) {
 		return valueFactory.createLiteral(literal);
 	}
 	
-	public void addStatment(Resource subject, IRI predicate, Value object) {
-		repoConn.begin();
-		this.repoConn.add(subject, predicate, object);
-		repoConn.commit();
-	}
+	//Adiciona quey de insercao 
+		public void addStatment(Resource subject, IRI predicate, Value object) {
+			repoConn.begin();
+			String query =  "insert data {"+ 
+					"<" + subject + ">" + 
+					" <" + predicate + ">" + 
+					" <" + object + ">" +"}";
+			System.out.println(query);
+			repoConn.prepareUpdate(query).execute();
+			repoConn.commit();
+		}
 	
+	//Adiciona quey de insercao com o objeto sendo uma string
 	public void addStatment(Resource subject, IRI predicate, String object) {
 		repoConn.begin();
-		this.repoConn.add(subject, predicate, this.createLiteral(object));
+		String query =  "insert data {"+ 
+				"<" + subject + ">" + 
+				" <" + predicate + ">" + 
+				" <" + object + ">" +"}";
+		System.out.println(query);
+		repoConn.prepareUpdate(query).execute();
 		repoConn.commit();
 	}
 	
-	public void rmStatment(Resource subject, IRI predicate, Value object) {
+	
+	//Remove via query de remoção
+	public void rmStatment(IRI subject, IRI predicate, IRI object) {
 		repoConn.begin();
-		this.repoConn.remove(subject, predicate, object);
+		String query =  "delete data {"+ 
+						"<" + subject + ">" + 
+						" <" + predicate + ">" + 
+						" <" + object + ">" +"}";
+		System.out.println(query);
+		repoConn.prepareUpdate(query).execute();
 		repoConn.commit();
 	}
 	
-	public void rmStatment(Resource subject, IRI predicate, String object) {
+	//Remove via query de remoção com o objeto sendo uma string
+	public void rmStatment(IRI subject, IRI predicate, String object) {
 		repoConn.begin();
-		this.repoConn.remove(subject, predicate, this.createLiteral(object));
+		String query =  "delete data {"+ 
+						"<" + subject + ">" + 
+						" <" + predicate + ">" + 
+						" <" + object + ">" +"}";
+		System.out.println(query);
+		repoConn.prepareUpdate(query).execute();
 		repoConn.commit();
 	}
-
+	
+	//Consulta o banco e printa saida no terminal
 	public void sparqlQuery(String query) throws TupleQueryResultHandlerException, QueryEvaluationException, UnsupportedQueryResultFormatException, IOException {
 		TupleQuery tupleQuery = this.repoConn.prepareTupleQuery(QueryLanguage.SPARQL, query);
 		try (TupleQueryResult results = tupleQuery.evaluate()) {
@@ -82,6 +114,7 @@ public class WorkData {
 		}
 	}
 	
+	//Consulta banco e retorna uma string com a saída
 	public String sparqlQueryretorna(String query) throws TupleQueryResultHandlerException, QueryEvaluationException, UnsupportedQueryResultFormatException, IOException {
 		TupleQuery tupleQuery = this.repoConn.prepareTupleQuery(QueryLanguage.SPARQL, query);
 		try (TupleQueryResult results = tupleQuery.evaluate()) {

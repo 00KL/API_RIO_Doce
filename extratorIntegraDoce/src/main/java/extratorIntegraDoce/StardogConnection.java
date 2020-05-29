@@ -1,3 +1,4 @@
+//Classe que cria a conexão com o banco de triplas stardog
 package extratorIntegraDoce;
 
 import org.eclipse.rdf4j.repository.Repository;
@@ -40,10 +41,16 @@ public class StardogConnection {
 		this.server = server;
 		this.dataBase = dataBase;
 		
-		this.connectionConfig = ConnectionConfiguration
-				.to(dataBase)
-                .server(server)
-                .credentials(this.username, this.password);
+		try {
+			this.connectionConfig = ConnectionConfiguration
+					.to(dataBase)
+	                .server(server)
+	                .credentials(this.username, this.password);
+		} catch (Exception e) {
+			// TODO: handle exception
+			//System.out.println("Erro ao se conectar com o Stardog\n");
+		}
+		
 	}
     
 	public String getServer() {
@@ -86,7 +93,11 @@ public class StardogConnection {
 		this.repository.initialize();
 		try(RepositoryConnection repoConn = repository.getConnection()) {
 			return repoConn;
+		} catch (Exception e) {
+			// TODO: handle exception
+			//System.out.println("Erro ao se conectar com o Stardog\n");
 		}
+		return null;
 	}
 	
 	//Termina conexão do banco caso exista

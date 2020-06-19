@@ -1,5 +1,7 @@
 package br.ufes.nemo.integradoce.extrator.cdp;
 
+import org.eclipse.rdf4j.model.IRI;
+
 //Especifica a ordem dos dados na string linha
 //(0)Site                    (1)Sample Point	(2)Data Source	(3)Date	        (4)Sample Ref	(5)Lab Ref	    (6)Sample Type
 // Aguas  Interiores	    Acaiaca - Carmo 01	ALS	             8/9/17 14:24	314020-2017-1	314020-2017-1	Superficial
@@ -11,9 +13,9 @@ public class Sampling {
 //		                            gufo:hasBeginPointInXSDDateTimeStamp "2009-08-17T14:24:00-03:00"^^xsd:dateTimeStamp ;
 //		                            gufo:hasEndPointInXSDDateTimeStamp "2009-08-17T14:24:00-03:00"^^xsd:dateTimeStamp .
 	
-	String Sampling;
-	String pointLongName;
-	java.util.Date date;
+	private String Sampling;
+	private IRI geographicPoint;
+	private java.util.Date date;
 	
 	
 	public String getSampling() {
@@ -22,11 +24,11 @@ public class Sampling {
 	public void setSampling(String sampling) {
 		Sampling = sampling;
 	}
-	public String getPointLongName() {
-		return pointLongName;
+	public IRI getgeographicPoint() {
+		return geographicPoint;
 	}
-	public void setPointLongName(String pointLongName) {
-		this.pointLongName = pointLongName;
+	public void setgeographicPoint(IRI geographicPoint) {
+		this.geographicPoint = geographicPoint;
 	}
 	public java.util.Date getDate() {
 		return date;

@@ -1,5 +1,7 @@
 package br.ufes.nemo.integradoce.extrator.cdp;
 
+import org.eclipse.rdf4j.model.IRI;
+
 public class Measurement {
 //	:WaterMeasurementAlkalinity001 rdf:type owl:NamedIndividual ,
 //		    doce:Measurement ;
@@ -12,6 +14,9 @@ public class Measurement {
 	private String value;
 	private String unit;
 	private java.util.Date data;
+	private IRI geographicPoint;
+	
+
 	
 	public String getWaterMeasurement() {
 		return waterMeasurement;
@@ -43,7 +48,12 @@ public class Measurement {
 	public void setData(java.util.Date data) {
 		this.data = data;
 	}
-	
+	public IRI getgeographicPoint() {
+		return geographicPoint;
+	}
+	public void setgeographicPoint(IRI geographicPoint) {
+		this.geographicPoint = geographicPoint;
+	}
 	
 	
 }

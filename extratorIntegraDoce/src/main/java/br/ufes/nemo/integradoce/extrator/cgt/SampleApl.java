@@ -10,9 +10,6 @@ import br.ufes.nemo.integradoce.extrator.util.Prefixos;
 import br.ufes.nemo.integradoce.extrator.util.PropertiesUtil;
 
 
-//Especifica a ordem dos dados na string linha
-//(0)Site                    (1)Sample Point	(2)Data Source	(3)Date	        (4)Sample Ref	(5)Lab Ref	    (6)Sample Type
-//Aguas  Interiores	         Acaiaca-Carmo01	ALS	             8/9/17 14:24	314020-2017-1	314020-2017-1	Superficial
 public class SampleApl extends AbstractApl {
 	
 	public SampleApl(Repository repository) {
@@ -41,6 +38,7 @@ public class SampleApl extends AbstractApl {
 			IRI samplingType  = repository.createIRI(Prefixos.DOCE.label , sample.getWaterSampling()); 
 			IRI surfaceWaterSample = repository.createIRI(Prefixos.DOCE.label, "SurfaceWaterSample");
 			IRI RioDoce = repository.createIRI(Prefixos.DOCE.label, "RioDoce");
+			IRI pointShortName = LongToShortName(linha[1], repository);
 		
 //			Relações
 			IRI wasCreatedIn = repository.createIRI(Prefixos.GUFO.label, "wasCreatedIn");
@@ -51,17 +49,15 @@ public class SampleApl extends AbstractApl {
 			repository.addStatmentCluster(newSample, wasCreatedIn, samplingType);
 			repository.addStatmentCluster(newSample, represents, RioDoce);
 			
-			
 			SamplingApl samplingApl = new SamplingApl(repository);
-			samplingApl.post(linha, repository);
+			samplingApl.post(linha, repository, pointShortName);
 			
-			
-			postAllMeasurement(cabecalho, linha, repository, newSample);
+			postAllMeasurement(cabecalho, linha, repository, newSample, pointShortName);
 			
 		}
 		
 		
-		void postAllMeasurement(String cabecalho[], String[] linha, Repository repository, IRI sample) {
+		void postAllMeasurement(String cabecalho[], String[] linha, Repository repository, IRI sample, IRI pointShortName) {
 			
 			String elementoQuimicoStr = null;
 			MeasurementApl elementoQuimico = new MeasurementApl(repository);
@@ -70,21 +66,20 @@ public class SampleApl extends AbstractApl {
 																  // para se acrescentar novos elementos fisicos ou quimicos de uma 
 																  // medição basta altear acrescenta-los no arquivo no formato 
 																  // chave-para-encontrar-o-elemento = IRI-do-elemento,IRI-da-unidade-de-medida-do-elemento
-
+//			  doce:wasMeasuredIn :WaterMeasurementAlkalinity001
 			IRI wasMeasuredIn = repository.createIRI(Prefixos.DOCE.label, "wasMeasuredIn");
 			
 			for(int i = 0; i < linha.length; i++) {
 				if(!linha[i].isEmpty()) {
 					elementoQuimicoStr = propertiesUtil.consultaElemento(cabecalho[i]);
-					System.out.println(elementoQuimicoStr);
+					//System.out.println(elementoQuimicoStr);
 					if(elementoQuimicoStr != null) {
-						IRI measurement = elementoQuimico.post(cabecalho[i], linha[4].replaceAll("\\.", ""), linha[i], linha[3], elementoQuimicoStr.split(","));
-
+						IRI measurement = elementoQuimico.post(cabecalho[i], linha[4].replaceAll("\\.", ""), linha[i], linha[3], elementoQuimicoStr.split(","), pointShortName);
 						repository.addStatmentCluster(sample, wasMeasuredIn, measurement);
+				
+					}
 					
-					}	
 				}
 			}
-		}
-		
+		}	
 }

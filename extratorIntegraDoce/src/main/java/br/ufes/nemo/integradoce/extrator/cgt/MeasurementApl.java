@@ -17,7 +17,7 @@ public class MeasurementApl extends AbstractApl {
 		super(repository);
 	}
 
-	public IRI post(String quemicalElement, String sample, String value, String data, String[] elementAndUnit) {
+	public IRI post(String quemicalElement, String sample, String value, String data, String[] elementAndUnit, IRI geographicPoint) {
 		Measurement measurement = new Measurement();
 		try {
 			
@@ -25,7 +25,7 @@ public class MeasurementApl extends AbstractApl {
 			measurement.setQualityKind(elementAndUnit[0]);
 			measurement.setValue(value);
 			measurement.setUnit(elementAndUnit[1]);
-		
+			measurement.setgeographicPoint(geographicPoint);
 
 			SimpleDateFormat formatter1 = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 		
@@ -40,10 +40,10 @@ public class MeasurementApl extends AbstractApl {
 	}
 
 	private  IRI sendStatement(Measurement measurement) {
-		//Sujeito
+		//		//Sujeito
 		IRI waterMeasurement = this.repository.createIRI(Prefixos.DATABASE.label, measurement.getWaterMeasurement());
-		
-		//Objeto
+//		
+//		//Objeto
 		IRI unit = this.repository.createIRI(measurement.getUnit());
 		IRI measurement_x = this.repository.createIRI(Prefixos.DOCE.label, "Measurement");
 		IRI qualityKind = this.repository.createIRI(measurement.getQualityKind());
@@ -54,10 +54,12 @@ public class MeasurementApl extends AbstractApl {
 		IRI hasQualityValue = this.repository.createIRI(Prefixos.GUFO.label, "hasQualityValue");
 		IRI hasBeginPointInXSDDateTimeStamp = this.repository.createIRI(Prefixos.DOCE.label, "hasBeginPointInXSDDateTimeStamp");
 		IRI hasEndPointInXSDDateTimeStamp = this.repository.createIRI(Prefixos.DOCE.label, "hasEndPointInXSDDateTimeStamp");
-
+		IRI locatedIn = repository.createIRI(Prefixos.DATABASE.label, "locatedIn");//deu ruim?
+		
 		this.repository.addStatmentCluster(waterMeasurement, RDF.TYPE, OWL.NAMEDINDIVIDUAL);
 		this.repository.addStatmentCluster(waterMeasurement, RDF.TYPE, measurement_x);
 		this.repository.addStatmentCluster(waterMeasurement, expressedIn, unit);
+		this.repository.addStatmentCluster(waterMeasurement, locatedIn, measurement.getgeographicPoint());//deu ruim?
 		this.repository.addStatmentCluster(waterMeasurement, measuredQualityKind, qualityKind);
 		this.repository.addStatmentCluster(waterMeasurement, hasBeginPointInXSDDateTimeStamp, this.repository.createLiteralDate(measurement.getData()));
 		this.repository.addStatmentCluster(waterMeasurement, hasEndPointInXSDDateTimeStamp, this.repository.createLiteralDate(measurement.getData()));

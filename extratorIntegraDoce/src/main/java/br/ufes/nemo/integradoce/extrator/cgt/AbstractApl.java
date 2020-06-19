@@ -33,16 +33,12 @@ public abstract class AbstractApl {
 			IRI pointShortName = repository.createIRI(nameSpaceAndPoint[0]+"#", nameSpaceAndPoint[1]);
 			return pointShortName;
 		} catch (TupleQueryResultHandlerException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (QueryEvaluationException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (UnsupportedQueryResultFormatException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		

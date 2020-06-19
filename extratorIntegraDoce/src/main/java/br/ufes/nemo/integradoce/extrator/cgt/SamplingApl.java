@@ -17,17 +17,16 @@ public class SamplingApl extends AbstractApl{
 		super(repository);
 	}
 	
-	public void post(String[] strings, Repository repository){
+	public void post(String[] strings, Repository repository, IRI geographicPoint){
 		Sampling sampling = new Sampling();
 		try {	
 			sampling.setSampling("WaterSampling" + strings[4]);
-			sampling.setPointLongName(strings[1]);
+			sampling.setgeographicPoint(geographicPoint);
 			
 			SimpleDateFormat formatter1 = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 			sampling.setDate(formatter1.parse(strings[3]));
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			//System.out.println("Erro com formato da data.");
+			System.out.println("Erro com formato da data.");
 			e.printStackTrace();
 		}
 		sendStatement(sampling);
@@ -42,19 +41,17 @@ public class SamplingApl extends AbstractApl{
 			IRI samplingType = repository.createIRI(Prefixos.DOCE.label, "Sampling");
 			//data é um objeto literal, por isso é criado na declaração do Statment
 			
-			IRI pointShortName = LongToShortName(sampling.getPointLongName(), repository);
-			
 			
 			//relações
 			IRI locatedIn = repository.createIRI(Prefixos.DATABASE.label, "locatedIn");
 			IRI hasBeginPointInXSDDateTimeStamp = repository.createIRI(Prefixos.DOCE.label, "hasBeginPointInXSDDateTimeStamp");
 			IRI hasEndPointInXSDDateTimeStamp = repository.createIRI(Prefixos.DOCE.label, "hasEndPointInXSDDateTimeStamp");
 			
-			repository.addStatmentCluster(newSampling, RDF.TYPE, OWL.NAMEDINDIVIDUAL);
-			repository.addStatmentCluster(newSampling, RDF.TYPE, samplingType);
-			repository.addStatmentCluster(newSampling, locatedIn, pointShortName);
-			repository.addStatmentCluster(newSampling, hasBeginPointInXSDDateTimeStamp, repository.createLiteralDate(sampling.getDate()));
-			repository.addStatmentCluster(newSampling, hasEndPointInXSDDateTimeStamp, repository.createLiteralDate(sampling.getDate()));			
+			this.repository.addStatmentCluster(newSampling, RDF.TYPE, OWL.NAMEDINDIVIDUAL);
+			this.repository.addStatmentCluster(newSampling, RDF.TYPE, samplingType);
+			this.repository.addStatmentCluster(newSampling, locatedIn, sampling.getgeographicPoint());
+			this.repository.addStatmentCluster(newSampling, hasBeginPointInXSDDateTimeStamp, repository.createLiteralDate(sampling.getDate()));
+			this.repository.addStatmentCluster(newSampling, hasEndPointInXSDDateTimeStamp, repository.createLiteralDate(sampling.getDate()));			
 		}
 	
 }

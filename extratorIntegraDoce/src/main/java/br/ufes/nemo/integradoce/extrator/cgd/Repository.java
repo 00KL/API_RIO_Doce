@@ -156,13 +156,11 @@ public class Repository {
 				//Cria e povoa o vetor de Strings
 				String linha = "";
 				
-				//Vector<String> l = new Vector<String>();
 				while(br.ready()){
 					linha = linha + br.readLine() + "\n";
 					
 				}
 				
-//				//System.out.println(linha);
 				br.close();
 				
 				//apaga arquivo temporário

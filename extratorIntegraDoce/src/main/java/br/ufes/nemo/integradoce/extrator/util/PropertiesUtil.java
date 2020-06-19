@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-
 public class PropertiesUtil {
 
 	// consulta o arquivo src/main/resources/elementosFisicoQuimicos.properties
@@ -14,7 +13,7 @@ public class PropertiesUtil {
 	  // chave-para-encontrar-o-elemento = IRI-do-elemento,IRI-da-unidade-de-medida-do-elemento
 	 public String consultaElemento(String elemento) {		 
 		 
-		 try (InputStream input = getClass().getClassLoader().getResourceAsStream("elementosFisicoQuimicos.properties")) {
+		 try (InputStream input = getClass().getClassLoader().getResourceAsStream("PhysicalChemicalQualityKind.properties")) {
 	            Properties prop = new Properties();
 
 	            //carrega o arquivo properties usando o caminho dado, dentro de um metodo estático

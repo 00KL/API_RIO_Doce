@@ -4,12 +4,11 @@ package br.ufes.nemo.integradoce.extrator.cdp;
 //(5)X	(6)Y	(7)Z	(8)Projection	(9)Datum	(10)Sample Point Category	(11)Comment
 public class GeographicPoint {
 
-	String geograficPoint; //Short Name
-	String label; //Long Name
-	String comment;
-	String latitude;
-	String longitude; 
-	String query;
+	private String geograficPoint; //Short Name
+	private String label; //Long Name
+	private String comment;
+	private String latitude;
+	private String longitude; 
 	
 	
 	
@@ -53,13 +52,6 @@ public class GeographicPoint {
 		this.longitude = longitude;
 	}
 
-	public String getQuery() {
-		return query;
-	}
-
-	public void setQuery(String query) {
-		this.query = query;
-	}
 
 	
 	

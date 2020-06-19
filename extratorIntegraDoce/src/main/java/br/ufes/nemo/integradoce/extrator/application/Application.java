@@ -24,32 +24,27 @@ public class Application {
 		System.out.println("Begin");
 		
 		SampleApl s = new SampleApl(repository);
+		
+		repository.beginStatment();
 		for(int i = 0; i < tabela.size(); i++) {
-//			System.out.println(i);
-			repository.beginStatment();
 			s.post(cabecalho, tabela.get(i), repository);
-			System.exit(1);
-			repository.commitStatment();
-			//------------MEDINDO TEMPO-------------
-//			long fim = System.currentTimeMillis() - comeco;
-//			//System.out.println("Fim do codigo "+ fim);
-			
 		}
+		repository.commitStatment();
 		
 		System.out.println("End");
 	}
 	
 	static void arquivoGeographicPoint(Repository repository, ArrayList<String[]> tabela ) {
-//		Post data
-		GeographicPointApl geo = new GeographicPointApl(repository);
+		
 		System.out.println("Begin");
 		
+		GeographicPointApl geo = new GeographicPointApl(repository);
+		
+		repository.beginStatment();
 		for(int i = 0; i < tabela.size(); i++) {
-			repository.beginStatment();
-			geo.post( tabela.get(i));
-			repository.commitStatment();	
-			
+			geo.post( tabela.get(i));	
 		}
+		repository.commitStatment();
 		
 		System.out.println("End");
 	}
@@ -62,14 +57,13 @@ public class Application {
 		//System.out.println("Criando conexão com o banco" + System.currentTimeMillis());
 		
 		//Pergunta para ecolha do usuário
-		System.out.println("Esse codigo tem por objetivo carregar dados no banco.");
-		System.out.println("É preciso que dados do tipo Pontos geográficos sejam carregados primeiro");
-		System.out.println("pois esses são consultados para se construir as amostras no banco.");
+		System.out.println("Esse código tem por objetivo carregar dados no banco.");
+		System.out.println("É preciso que dados do tipo Pontos Geográficos sejam carregados primeiro,");
+		System.out.println("pois esses são necessários para a carga de Amostras no banco.");
 		System.out.println("Digite o caminho para o arquivo:");
 		Scanner scanner = new Scanner(System.in); 
 		String caminho = scanner.nextLine();
-		scanner.close();
-//		String caminho = "C:\\Users\\lucas\\Downloads\\Agua.csv";
+		
 		
 		//Le e organiza os dados
 		Reader arquivoCsv = new Reader(caminho);
@@ -79,11 +73,13 @@ public class Application {
 		System.out.println("Arquivo lido com sucesso");
 		
 		//C:\Users\lucas\Downloads\Pontos.csv
-		//C:\Users\lucas\Downloads\Agua.csv
+		//C:\Users\lucas\Downloads\agua.csv
 		
 		//Pergunta o usuário qual tipo de arquivo será lido
 		System.out.println("Qual tipo de arquivo será lido? \n 0 - Sair \n 1 - Ponto geográfico \n 2 - Amostra");
+		
 		int escolha = scanner.nextInt();
+		scanner.close();
 		switch (escolha) {
 		case 0:
 			System.out.println("Saindo");
@@ -98,13 +94,10 @@ public class Application {
 			break;
 		
 		default:
-			System.out.println("ERRO codigo não aceito, tente de novo.");
+			System.out.println("Codigo não aceito, tente de novo.");
 		}
 		
-		
-		
 		return;
-//		//System.out.println("lendo arquivo e armazenando dados" + System.currentTimeMillis());	
 		
 	}
 	

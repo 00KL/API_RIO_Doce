@@ -41,6 +41,7 @@ public class Reader {
 	//medida.
 	//Ex: Aluminio total (mg/L) -> Aluminio-total
 	public String[] setCabecalho(String cabecalhoCompleto) {
+		//cabecalhoCompleto = cabecalhoCompleto.replaceAll("\\s", "-");
 	
 		String[] cabecalho = cabecalhoCompleto.split(",");
 		

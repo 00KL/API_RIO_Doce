@@ -17,22 +17,24 @@ public class SamplingApl extends AbstractApl{
 		super(repository);
 	}
 	
-	public void post(String[] strings, Repository repository, IRI geographicPoint){
+	public void post(String cabecalho[], String[] linha){
+		
 		Sampling sampling = new Sampling();
 		try {	
-			sampling.setSampling("WaterSampling" + strings[4]);
-			sampling.setgeographicPoint(geographicPoint);
+			sampling.setSampling("WaterSampling" + linha[4]);
+			IRI pointShortName = LongToShortName(linha[1], repository);
+			sampling.setgeographicPoint(pointShortName);
 			
 			SimpleDateFormat formatter1 = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-			sampling.setDate(formatter1.parse(strings[3]));
+			sampling.setDate(formatter1.parse(linha[3]));
 		} catch (ParseException e) {
 			System.out.println("Erro com formato da data.");
 			e.printStackTrace();
 		}
-		sendStatement(sampling);
+		sendStatement(cabecalho, linha, sampling);
 	}
 		
-		public void sendStatement(Sampling sampling) {
+		public void sendStatement(String cabecalho[], String[] linha, Sampling sampling) {
 		
 			//Sujeito
 			IRI newSampling = repository.createIRI(Prefixos.DATABASE.label, sampling.getSampling());
@@ -51,7 +53,10 @@ public class SamplingApl extends AbstractApl{
 			this.repository.addStatmentCluster(newSampling, RDF.TYPE, samplingType);
 			this.repository.addStatmentCluster(newSampling, locatedIn, sampling.getgeographicPoint());
 			this.repository.addStatmentCluster(newSampling, hasBeginPointInXSDDateTimeStamp, repository.createLiteralDate(sampling.getDate()));
-			this.repository.addStatmentCluster(newSampling, hasEndPointInXSDDateTimeStamp, repository.createLiteralDate(sampling.getDate()));			
+			this.repository.addStatmentCluster(newSampling, hasEndPointInXSDDateTimeStamp, repository.createLiteralDate(sampling.getDate()));
+			
+			SampleApl sample = new SampleApl(repository);
+			sample.post(cabecalho, linha, sampling.getgeographicPoint());
 		}
 	
 }

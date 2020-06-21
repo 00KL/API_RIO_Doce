@@ -4,13 +4,17 @@ package br.ufes.nemo.integradoce.extrator.application;
 import java.util.Scanner;
 import java.util.ArrayList;
 
-
+import org.eclipse.rdf4j.model.IRI;
 import org.eclipse.rdf4j.repository.RepositoryConnection; //Permite a utilizacao de funcoes para conectar-se ao banco
 
 import br.ufes.nemo.integradoce.extrator.cgd.Connection;
 import br.ufes.nemo.integradoce.extrator.cgd.Repository;
 import br.ufes.nemo.integradoce.extrator.cgt.GeographicPointApl;
-import br.ufes.nemo.integradoce.extrator.cgt.SampleApl;
+import br.ufes.nemo.integradoce.extrator.cgt.MeasurementApl;
+import br.ufes.nemo.integradoce.extrator.cgt.MeasurementInSituAPL;
+import br.ufes.nemo.integradoce.extrator.cgt.SamplingApl;
+import br.ufes.nemo.integradoce.extrator.util.Prefixos;
+import br.ufes.nemo.integradoce.extrator.util.PropertiesUtil;
 import br.ufes.nemo.integradoce.extrator.util.Reader;
 
 //INPUT: Uma lista de strings
@@ -23,16 +27,28 @@ public class Application {
 		
 		System.out.println("Begin");
 		
-		SampleApl s = new SampleApl(repository);
+		SamplingApl s = new SamplingApl(repository);
+		MeasurementInSituAPL m = new MeasurementInSituAPL(repository);
 		
 		repository.beginStatment();
 		for(int i = 0; i < tabela.size(); i++) {
-			s.post(cabecalho, tabela.get(i), repository);
+			if(tabela.get(i)[4].contains("insitu")) {
+				String[] linha = tabela.get(i);
+				for(int j = 0; i < linha.length; i++) {
+					if(!linha[i].isEmpty()) {	
+						m.post(cabecalho[j], linha[j], linha);
+						
+					}
+				}
+				
+			}
+			s.post(cabecalho, tabela.get(i));
 		}
 		repository.commitStatment();
 		
 		System.out.println("End");
 	}
+	
 	
 	static void arquivoGeographicPoint(Repository repository, ArrayList<String[]> tabela ) {
 		

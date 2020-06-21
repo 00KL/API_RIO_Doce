@@ -8,7 +8,7 @@ import br.ufes.nemo.integradoce.extrator.cgd.Repository;
 public class Extrator {
 	
 	public String consulta(String query) throws Exception {
-		Connection SC = new Connection("http://200.137.66.31:5820", "testDB2");
+		Connection SC = new Connection("http://200.137.66.31:5820", "RioDoceTest");
 		RepositoryConnection repoConn = SC.getConnection();
 		Repository repository = new Repository(repoConn);
 		

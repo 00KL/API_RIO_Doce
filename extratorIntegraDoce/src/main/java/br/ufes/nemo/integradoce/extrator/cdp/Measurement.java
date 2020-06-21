@@ -15,6 +15,7 @@ public class Measurement {
 	private String unit;
 	private java.util.Date data;
 	private IRI geographicPoint;
+	private String measuredObject;
 	
 
 	
@@ -53,6 +54,12 @@ public class Measurement {
 	}
 	public void setgeographicPoint(IRI geographicPoint) {
 		this.geographicPoint = geographicPoint;
+	}
+	public String getMeasuredObject() {
+		return measuredObject;
+	}
+	public void setMeasuredObject(String measuredObject) {
+		this.measuredObject = measuredObject;
 	}
 	
 	

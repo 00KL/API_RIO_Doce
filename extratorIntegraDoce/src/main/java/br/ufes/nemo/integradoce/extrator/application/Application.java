@@ -28,19 +28,11 @@ public class Application {
 		System.out.println("Begin");
 		
 		SamplingApl s = new SamplingApl(repository);
-		MeasurementInSituAPL m = new MeasurementInSituAPL(repository);
 		
 		repository.beginStatment();
 		for(int i = 0; i < tabela.size(); i++) {
 			if(tabela.get(i)[4].contains("insitu")) {
-				String[] linha = tabela.get(i);
-				for(int j = 0; i < linha.length; i++) {
-					if(!linha[i].isEmpty()) {	
-						m.post(cabecalho[j], linha[j], linha);
-						
-					}
-				}
-				
+				inSituLine(cabecalho, tabela.get(i), repository);
 			}
 			s.post(cabecalho, tabela.get(i));
 		}
@@ -49,6 +41,12 @@ public class Application {
 		System.out.println("End");
 	}
 	
+	public static void inSituLine(String cabecalho[], String[] linha, Repository repository) {
+		MeasurementInSituAPL m = new MeasurementInSituAPL(repository);
+		for(int j = 0; j < linha.length; j++) {
+				m.post(cabecalho[j], linha[j], linha);		
+		}
+	}
 	
 	static void arquivoGeographicPoint(Repository repository, ArrayList<String[]> tabela ) {
 		

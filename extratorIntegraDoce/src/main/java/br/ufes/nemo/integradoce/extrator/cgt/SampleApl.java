@@ -58,17 +58,15 @@ public class SampleApl extends AbstractApl {
 			String elementoQuimicoStr = null;
 			MeasurementApl elementoQuimico = new MeasurementApl(repository);
 			PropertiesUtil propertiesUtil = new PropertiesUtil(); // consulta o arquivo src/main/resources/elementosFisicoQuimicos.properties
-															  // para checar os elementos estabelecidos pela ontologia.
+															  	  // para checar os elementos estabelecidos pela ontologia.
 																  // para se acrescentar novos elementos fisicos ou quimicos de uma 
 																  // medição basta altear acrescenta-los no arquivo no formato 
 																  // chave-para-encontrar-o-elemento = IRI-do-elemento,IRI-da-unidade-de-medida-do-elemento
-//			  doce:wasMeasuredIn :WaterMeasurementAlkalinity001
 			IRI wasMeasuredIn = repository.createIRI(Prefixos.DOCE.label, "wasMeasuredIn");
 			
 			for(int i = 0; i < linha.length; i++) {
 				if(!linha[i].isEmpty()) {
 					elementoQuimicoStr = propertiesUtil.consultaElemento(cabecalho[i]);
-					//System.out.println(elementoQuimicoStr);
 					if(elementoQuimicoStr != null) {
 						IRI measurement = elementoQuimico.post(cabecalho[i], linha[4].replaceAll("\\.", ""), linha[i], linha[3], elementoQuimicoStr.split(","), pointShortName);
 						repository.addStatmentCluster(sample, wasMeasuredIn, measurement);

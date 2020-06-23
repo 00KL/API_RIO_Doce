@@ -37,6 +37,8 @@ public class MeasurementInSituAPL extends AbstractApl {
 					SimpleDateFormat formatter1 = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 				
 					measurement.setData(formatter1.parse(linha[3]));
+				} else {
+					return null;
 				}
 			} else {
 				return null;
@@ -44,7 +46,6 @@ public class MeasurementInSituAPL extends AbstractApl {
 			
 			
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 

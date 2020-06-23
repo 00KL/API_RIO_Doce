@@ -172,9 +172,8 @@ public class Repository {
 				e.printStackTrace();
 			}
 		} catch (Exception e) {
-			//System.out.println(e.getMessage());
+			e.printStackTrace();
 		}
-		//TODO colocar mensagem de erro aqui
 		return null;
 	}
 

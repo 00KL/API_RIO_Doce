@@ -8,7 +8,7 @@ import br.ufes.nemo.integradoce.extrator.cgd.Repository;
 public class Extrator {
 	
 	public String consulta(String query) throws Exception {
-		Connection SC = new Connection("http://200.137.66.31:5820", "RioDoceTest");
+		Connection SC = new Connection("http://200.137.66.31:5820", "testDBD2");
 		RepositoryConnection repoConn = SC.getConnection();
 		Repository repository = new Repository(repoConn);
 		
@@ -17,7 +17,6 @@ public class Extrator {
 			SC.closeConnection();
 			return x;
 		} catch (Exception e) {
-			// TODO: handle exception
 			SC.closeConnection();
 			return "Querry inapropriada";
 		}

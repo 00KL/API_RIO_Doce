@@ -28,10 +28,10 @@ public class MeasurementApl extends AbstractApl {
 	}
 
 	private  IRI sendStatement(Measurement measurement) {
-		//		//Sujeito
+		//Sujeito
 		IRI waterMeasurement = this.repository.createIRI(Prefixos.DATABASE.label, measurement.getWaterMeasurement());
-//		
-//		//Objeto
+		
+		//Objeto
 		IRI unit = this.repository.createIRI(measurement.getUnit());
 		IRI measurement_x = this.repository.createIRI(Prefixos.DOCE.label, "Measurement");
 		IRI qualityKind = this.repository.createIRI(measurement.getQualityKind());

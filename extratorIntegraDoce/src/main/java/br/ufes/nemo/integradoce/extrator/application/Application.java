@@ -4,22 +4,16 @@ package br.ufes.nemo.integradoce.extrator.application;
 import java.util.Scanner;
 import java.util.ArrayList;
 
-import org.eclipse.rdf4j.model.IRI;
+
 import org.eclipse.rdf4j.repository.RepositoryConnection; //Permite a utilizacao de funcoes para conectar-se ao banco
 
 import br.ufes.nemo.integradoce.extrator.cgd.Connection;
 import br.ufes.nemo.integradoce.extrator.cgd.Repository;
 import br.ufes.nemo.integradoce.extrator.cgt.GeographicPointApl;
-import br.ufes.nemo.integradoce.extrator.cgt.MeasurementApl;
 import br.ufes.nemo.integradoce.extrator.cgt.MeasurementInSituAPL;
 import br.ufes.nemo.integradoce.extrator.cgt.SamplingApl;
-import br.ufes.nemo.integradoce.extrator.util.Prefixos;
-import br.ufes.nemo.integradoce.extrator.util.PropertiesUtil;
 import br.ufes.nemo.integradoce.extrator.util.Reader;
 
-//INPUT: Uma lista de strings
-	//OUTPUT: Caso a string esteja bem formada dentro dos padrões estabelicidos pela linguagem SPARQL printa no console o resultado da consulta
-	//		  Caso contrário printa no console uma mensagem de erro alertando sobre a mal formacao da string de consulta
 
 public class Application {
 	
@@ -27,25 +21,24 @@ public class Application {
 		
 		System.out.println("Begin");
 		
+		MeasurementInSituAPL m = new MeasurementInSituAPL(repository);
 		SamplingApl s = new SamplingApl(repository);
 		
 		repository.beginStatment();
 		for(int i = 0; i < tabela.size(); i++) {
 			if(tabela.get(i)[4].contains("insitu")) {
-				inSituLine(cabecalho, tabela.get(i), repository);
+				String[] linha = tabela.get(i);
+				for(int j = 0; j < linha.length; j++) {
+					m.post(cabecalho[j], linha[j], linha);		
+				}
+			}else {
+				s.post(cabecalho, tabela.get(i));
 			}
-			s.post(cabecalho, tabela.get(i));
+			
 		}
 		repository.commitStatment();
 		
 		System.out.println("End");
-	}
-	
-	public static void inSituLine(String cabecalho[], String[] linha, Repository repository) {
-		MeasurementInSituAPL m = new MeasurementInSituAPL(repository);
-		for(int j = 0; j < linha.length; j++) {
-				m.post(cabecalho[j], linha[j], linha);		
-		}
 	}
 	
 	static void arquivoGeographicPoint(Repository repository, ArrayList<String[]> tabela ) {
@@ -85,9 +78,6 @@ public class Application {
 		ArrayList<String[]> tabela = arquivoCsv.getTabela();
 		String cabecalho[] = arquivoCsv.getCabecalho();
 		System.out.println("Arquivo lido com sucesso");
-		
-		//C:\Users\lucas\Downloads\Pontos.csv
-		//C:\Users\lucas\Downloads\agua.csv
 		
 		//Pergunta o usuário qual tipo de arquivo será lido
 		System.out.println("Qual tipo de arquivo será lido? \n 0 - Sair \n 1 - Ponto geográfico \n 2 - Amostra");

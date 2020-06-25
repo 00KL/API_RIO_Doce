@@ -10,12 +10,10 @@ import org.eclipse.rdf4j.repository.RepositoryConnection; //Permite a utilizacao
 import br.ufes.nemo.integradoce.extrator.cgd.Connection;
 import br.ufes.nemo.integradoce.extrator.cgd.Repository;
 import br.ufes.nemo.integradoce.extrator.cgt.GeographicPointApl;
-import br.ufes.nemo.integradoce.extrator.cgt.SampleApl;
+import br.ufes.nemo.integradoce.extrator.cgt.MeasurementInSituAPL;
+import br.ufes.nemo.integradoce.extrator.cgt.SamplingApl;
 import br.ufes.nemo.integradoce.extrator.util.Reader;
 
-//INPUT: Uma lista de strings
-	//OUTPUT: Caso a string esteja bem formada dentro dos padrões estabelicidos pela linguagem SPARQL printa no console o resultado da consulta
-	//		  Caso contrário printa no console uma mensagem de erro alertando sobre a mal formacao da string de consulta
 
 public class Application {
 	
@@ -23,11 +21,20 @@ public class Application {
 		
 		System.out.println("Begin");
 		
-		SampleApl s = new SampleApl(repository);
+		MeasurementInSituAPL m = new MeasurementInSituAPL(repository);
+		SamplingApl s = new SamplingApl(repository);
 		
 		repository.beginStatment();
 		for(int i = 0; i < tabela.size(); i++) {
-			s.post(cabecalho, tabela.get(i), repository);
+			if(tabela.get(i)[4].contains("insitu")) {
+				String[] linha = tabela.get(i);
+				for(int j = 0; j < linha.length; j++) {
+					m.post(cabecalho[j], linha[j], linha);		
+				}
+			}else {
+				s.post(cabecalho, tabela.get(i));
+			}
+			
 		}
 		repository.commitStatment();
 		
@@ -51,10 +58,9 @@ public class Application {
 	
 	public static void main(String[] args) throws Exception {
 		//Inicia uma conexão com o banco
-		Connection SC = new Connection("http://200.137.66.31:5820", "RioDoceTest");
+		Connection SC = new Connection("http://200.137.66.31:5820", "RioDoceTest2");
 		RepositoryConnection repoConn = SC.getConnection();
 		Repository repository = new Repository(repoConn);
-		//System.out.println("Criando conexão com o banco" + System.currentTimeMillis());
 		
 		//Pergunta para ecolha do usuário
 		System.out.println("Esse código tem por objetivo carregar dados no banco.");
@@ -66,14 +72,10 @@ public class Application {
 		
 		
 		//Le e organiza os dados
-		Reader arquivoCsv = new Reader(caminho);
-		////System.out.println(arquivoCsv.getCabecalho());C:\\Users\\Tieza\\Desktop\\Rio_doce\\dados_test\\agua.csv"
-		ArrayList<String[]> tabela = arquivoCsv.getTabela();
-		String cabecalho[] = arquivoCsv.getCabecalho();
+		Reader arquivoTSV = new Reader(caminho);
+		ArrayList<String[]> tabela = arquivoTSV.getTabela();
+		String cabecalho[] = arquivoTSV.getCabecalho();
 		System.out.println("Arquivo lido com sucesso");
-		
-		//C:\Users\lucas\Downloads\Pontos.csv
-		//C:\Users\lucas\Downloads\agua.csv
 		
 		//Pergunta o usuário qual tipo de arquivo será lido
 		System.out.println("Qual tipo de arquivo será lido? \n 0 - Sair \n 1 - Ponto geográfico \n 2 - Amostra");

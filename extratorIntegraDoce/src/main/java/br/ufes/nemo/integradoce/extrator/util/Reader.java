@@ -25,7 +25,8 @@ public class Reader {
 			this.cabecalho = setCabecalho(cabecalhoCompleto);
 			
 			while ((row = csvReader.readLine()) != null) {	    
-			    tabela.add(row.split(","));
+			    tabela.add(row.split("\\t"));
+			    
 			}
 			csvReader.close();
 		} catch (Exception e) {
@@ -43,7 +44,7 @@ public class Reader {
 	public String[] setCabecalho(String cabecalhoCompleto) {
 		//cabecalhoCompleto = cabecalhoCompleto.replaceAll("\\s", "-");
 	
-		String[] cabecalho = cabecalhoCompleto.split(",");
+		String[] cabecalho = cabecalhoCompleto.split("\\t");
 		
 		for(int i = 7; i < cabecalho.length; i++) {			
 			cabecalho[i] = cabecalho[i].replaceAll("\\s", "-");
@@ -82,10 +83,10 @@ public class Reader {
 	}
 	
 	// Chooser
-	public static String chooserCSV() {
+	public static String chooserTSV() {
 		
 		JFileChooser choosen = new JFileChooser();
-		FileNameExtensionFilter filter = new FileNameExtensionFilter("*.csv", "csv");
+		FileNameExtensionFilter filter = new FileNameExtensionFilter("*.tsv", "tsv");
         choosen.setFileFilter(filter);
         return (choosen.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) ? choosen.getSelectedFile().getAbsolutePath() : null;
         

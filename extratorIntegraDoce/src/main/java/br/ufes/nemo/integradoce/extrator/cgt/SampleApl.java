@@ -17,17 +17,17 @@ public class SampleApl extends AbstractApl {
 	}
 	
 	//precisa receber o cabeçalho para identificar o elemento da coluna
-		public void post(String cabecalho[], String[] linha, Repository repository){
+		public void post(String cabecalho[], String[] linha, IRI geographicPoint){
 			Sample sample = new Sample();
 			sample.setWaterSample("WaterSample" + linha[4].replaceAll("\\.", ""));
 			sample.setWaterSampling("WaterSampling" + linha[4].replaceAll("\\.", ""));
 			
 			                                                   
-			sendStatement(cabecalho, linha, sample);                                 
+			sendStatement(cabecalho, linha, sample, geographicPoint);                                 
 		}
 		
 		
-		public void sendStatement(String cabecalho[], String[] linha, Sample sample) {
+		public void sendStatement(String cabecalho[], String[] linha, Sample sample, IRI geographicPoint) {
 			
 			//tripla -> sujeito relação objeto
 				
@@ -35,10 +35,9 @@ public class SampleApl extends AbstractApl {
 			IRI newSample = repository.createIRI(Prefixos.DATABASE.label, sample.getWaterSample()); 
 			
 //			Objeto
-			IRI samplingType  = repository.createIRI(Prefixos.DOCE.label , sample.getWaterSampling()); 
+			IRI samplingType  = repository.createIRI(Prefixos.DATABASE.label , sample.getWaterSampling()); 
 			IRI surfaceWaterSample = repository.createIRI(Prefixos.DOCE.label, "SurfaceWaterSample");
 			IRI RioDoce = repository.createIRI(Prefixos.DOCE.label, "RioDoce");
-			IRI pointShortName = LongToShortName(linha[1], repository);
 		
 //			Relações
 			IRI wasCreatedIn = repository.createIRI(Prefixos.GUFO.label, "wasCreatedIn");
@@ -49,10 +48,7 @@ public class SampleApl extends AbstractApl {
 			repository.addStatmentCluster(newSample, wasCreatedIn, samplingType);
 			repository.addStatmentCluster(newSample, represents, RioDoce);
 			
-			SamplingApl samplingApl = new SamplingApl(repository);
-			samplingApl.post(linha, repository, pointShortName);
-			
-			postAllMeasurement(cabecalho, linha, repository, newSample, pointShortName);
+			postAllMeasurement(cabecalho, linha, repository, newSample, geographicPoint);
 			
 		}
 		
@@ -62,19 +58,17 @@ public class SampleApl extends AbstractApl {
 			String elementoQuimicoStr = null;
 			MeasurementApl elementoQuimico = new MeasurementApl(repository);
 			PropertiesUtil propertiesUtil = new PropertiesUtil(); // consulta o arquivo src/main/resources/elementosFisicoQuimicos.properties
-															  // para checar os elementos estabelecidos pela ontologia.
+															  	  // para checar os elementos estabelecidos pela ontologia.
 																  // para se acrescentar novos elementos fisicos ou quimicos de uma 
 																  // medição basta altear acrescenta-los no arquivo no formato 
 																  // chave-para-encontrar-o-elemento = IRI-do-elemento,IRI-da-unidade-de-medida-do-elemento
-//			  doce:wasMeasuredIn :WaterMeasurementAlkalinity001
 			IRI wasMeasuredIn = repository.createIRI(Prefixos.DOCE.label, "wasMeasuredIn");
 			
 			for(int i = 0; i < linha.length; i++) {
 				if(!linha[i].isEmpty()) {
-					elementoQuimicoStr = propertiesUtil.consultaElemento(cabecalho[i]);
-					//System.out.println(elementoQuimicoStr);
+					elementoQuimicoStr = propertiesUtil.consultaElemento(cabecalho[i]);	
 					if(elementoQuimicoStr != null) {
-						IRI measurement = elementoQuimico.post(cabecalho[i], linha[4].replaceAll("\\.", ""), linha[i], linha[3], elementoQuimicoStr.split(","), pointShortName);
+						IRI measurement = elementoQuimico.post(cabecalho[i], linha[4].replaceAll("\\.", ""), linha[i], linha[3], elementoQuimicoStr.split(","), pointShortName, sample);
 						repository.addStatmentCluster(sample, wasMeasuredIn, measurement);
 				
 					}

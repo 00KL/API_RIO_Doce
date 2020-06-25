@@ -23,8 +23,8 @@ public class GeographicPointApl extends AbstractApl{
 		geographicPoint.setGeograficPoint (strings[2].replaceAll("\\s", "-"));
 		geographicPoint.setLabel (strings[1]);
 		geographicPoint.setComment(strings[11]);
-		geographicPoint.setLatitude(strings[3].replaceAll("\\.", ""));
-		geographicPoint.setLongitude(strings[4].replaceAll("\\.", ""));
+		geographicPoint.setLatitude(strings[3].replaceAll(",", "."));
+		geographicPoint.setLongitude(strings[4].replaceAll(",", "."));
 		
 		this.sendStatement(geographicPoint);
 	}

@@ -61,7 +61,6 @@ public class Application {
 		Connection SC = new Connection("http://200.137.66.31:5820", "RioDoceTest");
 		RepositoryConnection repoConn = SC.getConnection();
 		Repository repository = new Repository(repoConn);
-		//System.out.println("Criando conexão com o banco" + System.currentTimeMillis());
 		
 		//Pergunta para ecolha do usuário
 		System.out.println("Esse código tem por objetivo carregar dados no banco.");
@@ -74,7 +73,6 @@ public class Application {
 		
 		//Le e organiza os dados
 		Reader arquivoCsv = new Reader(caminho);
-		////System.out.println(arquivoCsv.getCabecalho());C:\\Users\\Tieza\\Desktop\\Rio_doce\\dados_test\\agua.csv"
 		ArrayList<String[]> tabela = arquivoCsv.getTabela();
 		String cabecalho[] = arquivoCsv.getCabecalho();
 		System.out.println("Arquivo lido com sucesso");

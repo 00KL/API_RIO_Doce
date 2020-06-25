@@ -35,7 +35,7 @@ public class SampleApl extends AbstractApl {
 			IRI newSample = repository.createIRI(Prefixos.DATABASE.label, sample.getWaterSample()); 
 			
 //			Objeto
-			IRI samplingType  = repository.createIRI(Prefixos.DOCE.label , sample.getWaterSampling()); 
+			IRI samplingType  = repository.createIRI(Prefixos.DATABASE.label , sample.getWaterSampling()); 
 			IRI surfaceWaterSample = repository.createIRI(Prefixos.DOCE.label, "SurfaceWaterSample");
 			IRI RioDoce = repository.createIRI(Prefixos.DOCE.label, "RioDoce");
 		
@@ -66,9 +66,9 @@ public class SampleApl extends AbstractApl {
 			
 			for(int i = 0; i < linha.length; i++) {
 				if(!linha[i].isEmpty()) {
-					elementoQuimicoStr = propertiesUtil.consultaElemento(cabecalho[i]);
+					elementoQuimicoStr = propertiesUtil.consultaElemento(cabecalho[i]);	
 					if(elementoQuimicoStr != null) {
-						IRI measurement = elementoQuimico.post(cabecalho[i], linha[4].replaceAll("\\.", ""), linha[i], linha[3], elementoQuimicoStr.split(","), pointShortName);
+						IRI measurement = elementoQuimico.post(cabecalho[i], linha[4].replaceAll("\\.", ""), linha[i], linha[3], elementoQuimicoStr.split(","), pointShortName, sample);
 						repository.addStatmentCluster(sample, wasMeasuredIn, measurement);
 				
 					}

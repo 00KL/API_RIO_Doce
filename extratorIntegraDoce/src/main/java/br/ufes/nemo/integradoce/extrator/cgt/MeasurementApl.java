@@ -14,14 +14,14 @@ public class MeasurementApl extends AbstractApl {
 		super(repository);
 	}
 
-	public IRI post(String quemicalElement, String sample, String value, String data, String[] elementAndUnit, IRI geographicPoint) {
+	public IRI post(String quemicalElement, String sampleString, String value, String data, String[] elementAndUnit, IRI geographicPoint, IRI sampleIRI) {
 		Measurement measurement = new Measurement();
 		
-		measurement.setWaterMeasurement("WaterMeasurement" + "_" + quemicalElement + "_" + sample);
+		measurement.setWaterMeasurement("WaterMeasurement" + "_" + quemicalElement + "_" + sampleString);
 		measurement.setQualityKind(elementAndUnit[0]);
 		measurement.setValue(value);
 		measurement.setUnit(elementAndUnit[1]);
-		measurement.setMeasuredObject(sample);
+		measurement.setMeasuredObject(sampleIRI);
 
 		return sendStatement(measurement);
 
@@ -47,6 +47,7 @@ public class MeasurementApl extends AbstractApl {
 		this.repository.addStatmentCluster(waterMeasurement, expressedIn, unit);
 		this.repository.addStatmentCluster(waterMeasurement, measuredQualityKind, qualityKind);
 		this.repository.addStatmentCluster(waterMeasurement, measured, measurement.getMeasuredObject());
+		//System.out.println(measurement.getMeasuredObject().toString());
 		
 		
 		if (!measurement.getValue().contains("<")) {

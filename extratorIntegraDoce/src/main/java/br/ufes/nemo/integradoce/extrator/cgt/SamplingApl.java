@@ -25,7 +25,7 @@ public class SamplingApl extends AbstractApl{
 			IRI pointShortName = LongToShortName(linha[1], repository);
 			sampling.setgeographicPoint(pointShortName);
 			
-			SimpleDateFormat formatter1 = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+			SimpleDateFormat formatter1 = new SimpleDateFormat("dd/MM/yy HH:mm");
 			sampling.setDate(formatter1.parse(linha[3]));
 		} catch (ParseException e) {
 			System.out.println("Erro com formato da data.");

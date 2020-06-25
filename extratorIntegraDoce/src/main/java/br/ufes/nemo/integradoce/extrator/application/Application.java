@@ -58,7 +58,7 @@ public class Application {
 	
 	public static void main(String[] args) throws Exception {
 		//Inicia uma conexão com o banco
-		Connection SC = new Connection("http://200.137.66.31:5820", "RioDoceTest");
+		Connection SC = new Connection("http://200.137.66.31:5820", "RioDoceTest2");
 		RepositoryConnection repoConn = SC.getConnection();
 		Repository repository = new Repository(repoConn);
 		
@@ -72,9 +72,9 @@ public class Application {
 		
 		
 		//Le e organiza os dados
-		Reader arquivoCsv = new Reader(caminho);
-		ArrayList<String[]> tabela = arquivoCsv.getTabela();
-		String cabecalho[] = arquivoCsv.getCabecalho();
+		Reader arquivoTSV = new Reader(caminho);
+		ArrayList<String[]> tabela = arquivoTSV.getTabela();
+		String cabecalho[] = arquivoTSV.getCabecalho();
 		System.out.println("Arquivo lido com sucesso");
 		
 		//Pergunta o usuário qual tipo de arquivo será lido

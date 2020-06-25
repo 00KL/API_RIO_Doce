@@ -1,5 +1,6 @@
 package br.ufes.nemo.integradoce.extrator.cgt;
 
+import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
@@ -34,7 +35,7 @@ public class MeasurementInSituAPL extends AbstractApl {
 					IRI pointShortName = LongToShortName(linha[1], repository);
 					measurement.setgeographicPoint(pointShortName);
 
-					SimpleDateFormat formatter1 = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+					SimpleDateFormat formatter1 = new SimpleDateFormat("dd/MM/yy HH:mm");
 				
 					measurement.setData(formatter1.parse(linha[3]));
 				} else {
@@ -88,11 +89,24 @@ public class MeasurementInSituAPL extends AbstractApl {
 		
 		
 		if (!measurement.getValue().contains("<")) {
-			this.repository.addStatmentCluster(waterMeasurement, hasQualityValue, this.repository.createLiteral(Double.parseDouble(measurement.getValue())));
+			NumberFormat nf = NumberFormat.getNumberInstance();
+			nf.setMaximumFractionDigits(4);
+	 
+			float value;
+			try {
+				value = nf.parse(measurement.getValue()).floatValue();
+				
+				this.repository.addStatmentCluster(waterMeasurement, hasQualityValue, this.repository.createLiteral(value));
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
 		} else {
 			this.repository.addStatmentCluster(waterMeasurement, hasQualityValue, this.repository.createLiteral(measurement.getValue()));
 		}
-
+		
+		
 		return waterMeasurement;
 
 	}

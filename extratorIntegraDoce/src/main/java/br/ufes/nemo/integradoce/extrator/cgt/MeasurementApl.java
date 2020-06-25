@@ -1,5 +1,9 @@
 package br.ufes.nemo.integradoce.extrator.cgt;
 
+
+import java.text.NumberFormat;
+import java.text.ParseException;
+
 import org.eclipse.rdf4j.model.IRI;
 import org.eclipse.rdf4j.model.vocabulary.OWL;
 import org.eclipse.rdf4j.model.vocabulary.RDF;
@@ -47,15 +51,28 @@ public class MeasurementApl extends AbstractApl {
 		this.repository.addStatmentCluster(waterMeasurement, expressedIn, unit);
 		this.repository.addStatmentCluster(waterMeasurement, measuredQualityKind, qualityKind);
 		this.repository.addStatmentCluster(waterMeasurement, measured, measurement.getMeasuredObject());
-		//System.out.println(measurement.getMeasuredObject().toString());
+		
 		
 		
 		if (!measurement.getValue().contains("<")) {
-			this.repository.addStatmentCluster(waterMeasurement, hasQualityValue, this.repository.createLiteral(Double.parseDouble(measurement.getValue())));
+			NumberFormat nf = NumberFormat.getNumberInstance();
+			nf.setMaximumFractionDigits(4);
+	 
+			float value;
+	 
+			try {
+				value = nf.parse(measurement.getValue()).floatValue();
+				//C:\Users\lucas\Downloads\agua.tsv
+
+				this.repository.addStatmentCluster(waterMeasurement, hasQualityValue, this.repository.createLiteral(value));
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
 		} else {
 			this.repository.addStatmentCluster(waterMeasurement, hasQualityValue, this.repository.createLiteral(measurement.getValue()));
 		}
-
+		
+		
 		return waterMeasurement;
 
 	}

@@ -58,7 +58,7 @@ public class Application {
 	
 	public static void main(String[] args) throws Exception {
 		//Inicia uma conexão com o banco
-		Connection SC = new Connection("http://200.137.66.31:5820", "RioDoceTest2");
+		Connection SC = new Connection("http://200.137.66.31:5820", "RioDoceTest");
 		RepositoryConnection repoConn = SC.getConnection();
 		Repository repository = new Repository(repoConn);
 		

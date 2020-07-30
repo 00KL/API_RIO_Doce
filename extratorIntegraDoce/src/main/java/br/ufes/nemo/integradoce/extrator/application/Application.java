@@ -58,6 +58,10 @@ public class Application {
 	
 	public static void main(String[] args) throws Exception {
 		//Inicia uma conexão com o banco
+		//endereço ip do banco de dados:porta de acesso, nome do banco de dados que será preenchida		
+		//O banco deve existir previamente a execução do programa
+		//http://200.137.66.31:5820 é o caminho de acesso ao banco stardog do NEMO
+		//RioDoceTest é um exemplo de nome
 		Connection SC = new Connection("http://200.137.66.31:5820", "RioDoceTest");
 		RepositoryConnection repoConn = SC.getConnection();
 		Repository repository = new Repository(repoConn);
@@ -79,7 +83,7 @@ public class Application {
 		
 		//Pergunta o usuário qual tipo de arquivo será lido
 		System.out.println("Qual tipo de arquivo será lido? \n 0 - Sair \n 1 - Ponto geográfico \n 2 - Amostra");
-		
+	
 		int escolha = scanner.nextInt();
 		scanner.close();
 		switch (escolha) {

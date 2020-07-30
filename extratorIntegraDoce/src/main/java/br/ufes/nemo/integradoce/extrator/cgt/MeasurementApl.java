@@ -62,7 +62,7 @@ public class MeasurementApl extends AbstractApl {
 	 
 			try {
 				value = nf.parse(measurement.getValue()).floatValue();
-				//C:\Users\lucas\Downloads\agua.tsv
+				
 
 				this.repository.addStatmentCluster(waterMeasurement, hasQualityValue, this.repository.createLiteral(value));
 			} catch (ParseException e) {
